@@ -1,0 +1,39 @@
+server:
+  port: 8080
+
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/me?useUnicode=true
+    username: root
+    password: root
+    type: com.alibaba.druid.pool.DruidDataSource
+
+####druid configuration
+    druid:
+      filters: stat,wall
+      filter:
+        stat:
+          slow-sql-millis: 1000
+          log-slow-sql: true
+          enabled: true
+        wall:
+          enabled: true
+      aop-patterns: com.cdtu.exam.*
+      stat-view-servlet:
+        enabled: true
+        login-username: root
+        login-password: root
+
+      web-stat-filter:
+        enabled: true
+        url-pattern: /*
+        exclusions: '*.js,*.gif,*.jpg,*.png,*.css,*.ico,/druid/*'
+
+mybatis-plus:
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+
+
+
+

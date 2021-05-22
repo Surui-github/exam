@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cdtu.exam.mapper.PostMapper">
+    <resultMap id="BaseResultMap" type="com.cdtu.exam.entity.Post">
+        <id column="id" jdbcType="VARCHAR" property="id" />
+        <result column="content" jdbcType="VARCHAR" property="content" />
+        <result column="create_time" jdbcType="DATETIME" property="createTime" />
+        <result column="first_picture" jdbcType="VARCHAR" property="firstPicture" />
+        <result column="flag" jdbcType="VARCHAR" property="flag" />
+        <result column="is_appreciation" jdbcType="Bit" property="isAppreciation" />
+        <result column="is_comment" jdbcType="Bit" property="isComment" />
+        <result column="is_publish" jdbcType="Bit" property="isPublish" />
+        <result column="is_recommend" jdbcType="Bit" property="isRecommend" />
+        <result column="is_share_statement" jdbcType="Bit" property="isShareStatement" />
+        <result column="title" jdbcType="VARCHAR" property="title" />
+        <result column="update_time" jdbcType="DATETIME" property="updateTime" />
+        <result column="views" jdbcType="INTEGER" property="views" />
+        <result column="type_id" jdbcType="VARCHAR" property="typeId" />
+        <result column="user_id" jdbcType="VARCHAR" property="userId" />
+        <result column="description" jdbcType="VARCHAR" property="description" />
+    </resultMap>
+    <sql id="Base_Column_List">
+    post.id as id, content, create_time, first_picture, flag, is_appreciation, is_comment,is_publish,is_recommend,is_share_statement,title,update_time,views,type_id,user_id,description
+    </sql>
+
+    <!-- 分页获取数据 -->
+    <select id="list" parameterType="com.cdtu.exam.entity.Post" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from post left join post_tags on post.id = post_tags.posts_id
+        <where>
+            <if test="columnName!=null">
+                <if test="columnValue!=null">
+                    and ${columnName} like concat(concat('%',#{columnValue}),'%')
+                </if>
+            </if>
+            <if test="columnValue!=null">
+                <if test="columnValue!=''">
+                    and course_title like concat(concat('%',#{columnValue}),'%')
+                </if>
+            </if>
+            <if test="tagsId!=null">
+                <if test="tagsId!=''">
+                    and post_tags.tags_id = #{tagsId}
+                </if>
+            </if>
+        </where>
+        order by id desc
+    </select>
+</mapper>
